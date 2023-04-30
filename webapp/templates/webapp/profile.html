@@ -1,0 +1,85 @@
+{% extends 'webapp/layout.html' %}
+{% load custom_filters %}
+
+{% block content %}
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200">
+            <h2 class="text-lg font-medium leading-6 text-gray-900">Dashboard</h2>
+            <p class="mt-1 text-sm text-gray-500">User: {{ player }}</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow mt-4 overflow-x-auto overflow-y-auto">
+    <div class="p-4 sm:p-6 lg:p-8">
+        <h2 class="text-lg font-medium leading-6 text-gray-900">Tournaments</h2>
+            <div class="mt-4">            
+                <div class="inline-block min-w-full align-middle border-b border-gray-200">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tournament Name</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Players</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for tournament in single_tournaments %}
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <a href="{% url 'single_tournament_detail' tournament_id=tournament.id %}" class="font-medium text-gray-800 hover:text-gray-600">{{ tournament.name }}</a>
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">{{ tournament.start_date }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap">{{ tournament.end_date }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    {% if tournament|is_registered:player %}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+                                            Registered
+                                        </span>
+                                    {% else %}
+                                        <form action="{% url 'join_single_tournament' tournament_id=tournament.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">
+                                                Join
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">{{ tournament.players.count }}</td>
+                            </tr>
+                            {% endfor %}
+
+                            {% for tournament in team_tournaments %}
+                              <td class="px-4 py-3 whitespace-nowrap">
+                                <a href="{% url 'team_tournament_detail' tournament_id=tournament.id %}" class="font-medium text-gray-800 hover:text-gray-600">{{ tournament.name }}</a>
+                              </td>
+                              <td class="px-4 py-3 whitespace-nowrap">{{ tournament.start_date }}</td>
+                              <td class="px-4 py-3 whitespace-nowrap">{{ tournament.end_date }}</td>
+                              <td class="px-4 py-3 whitespace-nowrap">
+                                  {% if tournament|is_registered:player %}
+                                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+                                          Registered
+                                      </span>
+                                  {% else %}
+                                      <a href="{% url 'tournament_teams' tournament_id=tournament.id %}" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">
+                                              Create or Join
+                                      </a>                                      
+                                  {% endif %}
+                              </td>  
+                              <td class="px-4 py-3 whitespace-nowrap">{{ tournament.teams.count }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            
+{% endblock %}
+
+                            
+                            
+                        

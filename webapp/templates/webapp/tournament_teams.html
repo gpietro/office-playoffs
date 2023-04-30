@@ -1,0 +1,41 @@
+{% extends 'webapp/layout.html' %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow overflow-hidden">
+  <div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200 flex justify-between">
+    <h2 class="text-lg font-medium leading-6 text-gray-900">{{tournament.name}} - Teams</h2>
+    <a href="{% url 'create_team' tournament.id %}" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">
+      Create team
+    </a>
+  </div>
+  <div class="p-4 sm:p-4 lg:p-8">
+  {% if teams %}
+    {% for team in teams %}
+      <div>
+        <div class="pb-4 flex justify-between border-spacing-1 border-b">          
+          <h2 class="text-lg font-medium leading-6 text-gray-900">{{team.name}}</h2>
+          
+          {% if team.players.count < team.tournament.max_team_size and player not in team.players.all %}
+            <form action="{% url 'join_team' team_id=team.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">
+                  Join
+              </button>
+            </form>
+          {% endif %}            
+          
+        </div>
+        {% if team.players %}
+          {% for player in team.players.all %}
+          <div class="px-1 py-3 flex items-center justify-between">
+            <p class="">{{ player }}</p>
+          </div>
+          {% endfor %}  
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No teams found.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'webapp/layout.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-4 sm:p-4 lg:p-6 border-b border-gray-200">
+        <h2 class="text-lg font-medium leading-6 text-gray-900">{{tournament.name}}</h2>
+    </div>
+    <div class="p-4 sm:p-4 lg:p-6 overflow-x-auto overflow-y-auto">
+      <table class="min-w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {% for team_points in sorted_teams %}
+            {% with team=team_points.0 points=team_points.1 %}
+            <tr>
+              <td class="px-4 py-3">{{ forloop.counter }}</td>
+              <td class="px-4 py-3">{{ team.name }}</td>
+              <td class="px-4 py-3">{{ points }}</td>
+            </tr>
+            {% endwith %}
+          {% empty %}
+            <tr>
+              <td colspan="3">No teams found</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-4 sm:p-4 lg:p-6 border-b border-gray-200 flex justify-between">
+        <h2 class="text-lg font-medium leading-6 text-gray-900">Matches</h2>
+
+        <a href="{% url 'create_team_match' tournament_id=tournament.id %}" class="inline-flex items-center px-2.5 py-0.5 rounded-md font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">  
+          Create match
+        </a>
+    </div>
+    <div class="p-4 sm:p-4 lg:p-6">
+    {% if matches.count == 0 %}
+      <p>No matches have been scheduled yet for this tournament.</p>
+    {% else %}
+      <table class="min-w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {% for match in matches.all %}
+            <tr>
+              <td class="px-4 py-3">{{ match }}</td>
+              <td class="px-4 py-3">{{ match.date }}</td>              
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,126 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sparrow Sports Tournaments</title>
-  <style>    
-    body {
-      background-color: #f7f7f7;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      margin: 0;
-      padding: 0;
-    }
+{% extends 'webapp/layout.html' %}
+{% load static %}
 
-    header {
-      background-color: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 80px;
-      padding: 0 30px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 999;
-    }
 
-    header img {
-      height: 50px;
-    }
-
-    header nav ul {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    header nav li {
-      margin-left: 20px;
-    }
-
-    header nav li a {
-      color: #333;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    main {
-      padding: 100px 30px 30px 30px;
-    }
-
-    main h1 {
-      font-size: 36px;
-      margin: 0 0 20px 0;
-    }
-
-    main p {
-      font-size: 18px;
-      line-height: 1.5;
-      margin-bottom: 30px;
-    }
-
-    .main-btn {
-      background-color: #333;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 20px;
-    }
-
-    .main-btn:hover {
-      background-color: #555;
-    }
-
-    footer {
-      background-color: #333;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 50px;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-
-    footer p {
-      margin: 0;
-      font-size: 14px;
-    }
-
-  </style>
-</head>
-<body>
-  <div class="jumbotron">
-    <h1>Sparrow Sports Tournaments</h1>
-    <p class="lead">Welcome to the Sparrow Sports Tournaments website, where you can organize and participate in tournaments for ping pong and football table!</p>
-    <hr class="my-4">
-    <p>To create or join a league, please log in or create an account.</p>
-    <a class="btn btn-primary btn-lg" href="#" role="button">Log In</a>
+{% block content %}
+<div class="bg-white rounded-lg shadow overflow-hidden">
+  <div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200">
+      <h2 class="text-lg font-medium leading-6 text-gray-900">Welcome to Sparrow Sports Tournaments</h2>        
+      <p class="mt-1 text-sm text-gray-500">Edition 2023</p>
   </div>
-  
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <h2>Ping Pong Tournaments</h2>
-        <p>Join our ping pong tournaments and compete against your colleagues for the championship title!</p>
-        <p><a class="btn btn-secondary" href="#" role="button">Learn more &raquo;</a></p>
-      </div>
-      <div class="col-md-6">
-        <h2>Football Table Tournaments</h2>
-        <p>Join our football table tournaments and show off your skills on the pitch!</p>
-        <p><a class="btn btn-secondary" href="#" role="button">Learn more &raquo;</a></p>
-      </div>
+  <div class="p-4 sm:p-4 lg:p-8">
+    <div class="flex items-center">  
+      <img src="{% static 'webapp/images/leaguetable_icon.svg' %}" alt="League table icon" width=120 />
+      <p class="pl-8">
+        Organize and participate in tournaments for both single and team players! <br/>
+        To create or join a tournament, log in or create an account.
+      </p>      
     </div>
+    
+    
+    
+    <h2 class="text-lg font-medium leading-6 text-gray-900 mt-4">Single Tournaments</h2>
+    <div class="flex items-center">  
+      <img src="{% static 'webapp/images/tabletennis_icon.svg' %}" alt="Table tennis icon" width=120 />
+        <p class="pl-8">
+          Join our single tournaments and compete against other individual players <br/>
+          for the championship title!
+        </p>          
+      </div>
+      
+      <h2 class="text-lg font-medium leading-6 text-gray-900  mt-4">Team Tournaments</h2>
+      <div class="flex items-center">  
+      <img src="{% static 'webapp/images/tablefootball_icon.svg' %}" alt="Table football icon" width=120 />
+          <p class="pl-8">
+            Join our team tournaments and form a team or join an existing one to <br/>
+            compete against other teams for the championship title!
+          </p>          
+        </div>
   </div>
-</body>
-</html>
+</div>
+
+{% endblock %}

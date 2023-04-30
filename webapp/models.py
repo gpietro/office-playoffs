@@ -22,13 +22,12 @@ class Tournament(models.Model):
 
 
 class SingleTournament(Tournament):
-    participants = models.ManyToManyField(
-        'SingleParticipant', blank=True)
+    players = models.ManyToManyField(
+        'Player', blank=True)
 
 
 class TeamTournament(Tournament):
-    participants = models.ManyToManyField(
-        'TeamParticipant', blank=True)
+    max_team_size = models.IntegerField(default=2)
 
 
 class Participant(models.Model):
@@ -43,36 +42,64 @@ class Participant(models.Model):
         return self.name
 
 
-class SingleParticipant(Participant):
-    tournament = models.ManyToManyField(
+class Player(Participant):
+    tournaments = models.ManyToManyField(
         SingleTournament, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, unique=True, related_name='player')
+
+    def __str__(self):
+        return self.name + " (" + self.user.username + ")"
 
 
-class TeamParticipant(Participant):
-    tournament = models.ManyToManyField(TeamTournament)
-    users = models.ManyToManyField(User)
+class Team(Participant):
+    tournament = models.ForeignKey(
+        TeamTournament, on_delete=models.CASCADE, related_name='teams')
+    players = models.ManyToManyField(Player, related_name='teams')
+
+    def __str__(self):
+        return self.name + " (" + str(self.players.count()) + "/" + str(self.tournament.max_team_size) + ")"
+
+    def clean(self):
+        super().clean()
+        if self.players.count() > self.tournament.max_team_size:
+            raise ValidationError('Too many players in the team.')
 
 
 class Match(models.Model):
     home_score = models.PositiveSmallIntegerField(default=0)
     away_score = models.PositiveSmallIntegerField(default=0)
+    date = models.DateField(null=True, blank=True)
 
     class Meta:
         abstract = True
 
 
 class SingleMatch(Match):
-    tournament = models.ForeignKey(SingleTournament, on_delete=models.CASCADE)
+    tournament = models.ForeignKey(
+        SingleTournament, on_delete=models.CASCADE, related_name='matches')
     home_participant = models.ForeignKey(
-        SingleParticipant, on_delete=models.CASCADE, related_name='home_matches', blank=True, null=True)
+        Player, on_delete=models.CASCADE, related_name='home_matches', blank=True, null=True, related_query_name='home_match')
     away_participant = models.ForeignKey(
-        SingleParticipant, on_delete=models.CASCADE, related_name='away_matches', blank=True, null=True)
+        Player, on_delete=models.CASCADE, related_name='away_matches', blank=True, null=True, related_query_name='away_match')
+
+    def __str__(self):
+        if self.date:
+            return self.home_participant.name + " vs " + self.away_participant.name + " - " + str(self.home_score) + ":" + str(self.away_score)
+        else:
+            return self.home_participant.name + " vs " + self.away_participant.name + " - " + "not played yet"
 
 
 class TeamMatch(Match):
-    tournament = models.ForeignKey(TeamTournament, on_delete=models.CASCADE)
+    tournament = models.ForeignKey(
+        TeamTournament, on_delete=models.CASCADE, related_name='matches')
     home_participant = models.ForeignKey(
-        TeamParticipant, on_delete=models.CASCADE, related_name='home_matches', blank=True, null=True)
+        Team, on_delete=models.CASCADE, related_name='home_matches', blank=True, null=True, related_query_name='home_match')
     away_participant = models.ForeignKey(
-        TeamParticipant, on_delete=models.CASCADE, related_name='away_matches', blank=True, null=True)
+        Team, on_delete=models.CASCADE, related_name='away_matches', blank=True, null=True, related_query_name='away_match')
+
+    def __str__(self):
+        if self.date:
+            return self.home_participant.name + " vs " + self.away_participant.name + " - " + str(self.home_score) + ":" + str(self.away_score)
+        else:
+            return self.home_participant.name + " vs " + self.away_participant.name + " - " + "not played yet"

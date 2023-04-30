@@ -1,0 +1,57 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sparrow Sports Tournaments{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'webapp/img/favicon.ico'%}" />    
+    {% tailwind_css %}
+  </head>
+
+  <body class="bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container mx-auto py-3 md:flex md:justify-between md:items-center">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <img src="{% static 'webapp/images/logo.svg' %}" alt="Logo">
+            <a class="text-xl text-white hover:text-gray-200" href="/">Sparrow Sports Tournaments</a>
+          </div>
+          <div class="flex md:hidden">
+            <button type="button" class="text-gray-500 hover:text-gray-400 focus:outline-none focus:text-gray-400" aria-label="toggle menu">
+              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="md:flex md:items-center md:justify-between">
+          <div class="flex flex-col md:flex-row md:mx-6">
+            {% if user.is_authenticated %}
+            <a class="my-1 text-white font-medium md:mx-4 md:my-0 hover:text-gray-400" href="{% url 'profile' %}">Dashboard</a>
+            {% endif %}            
+          </div>
+          <div class="flex items-center">
+            {% if user.is_authenticated %}
+              <form method="POST" action="{% url 'account_logout' %}" class="mx-4">
+                {% csrf_token %}
+                <button type="submit" class="py-2 px-4 bg-gray-600 text-white font-medium rounded-md hover:bg-gray-500 focus:outline-none focus:bg-gray-500">Logout</button>
+              </form>
+            {% else %}
+              <a href="{% url 'account_login' %}" class="py-2 px-4 bg-gray-600 text-white font-medium rounded-md hover:bg-gray-500 focus:outline-none focus:bg-gray-500">Login</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container mx-auto mt-8">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
