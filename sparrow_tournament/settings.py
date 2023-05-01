@@ -21,7 +21,7 @@ DEBUG = os.environ['DEBUG'] == 'True'
 IS_HEROKU = os.environ['DYNO'] == 'True'
 
 if IS_HEROKU:
-    ALLOWED_HOSTS = ["sparrow-tournament.herokuapp.com/"]
+    ALLOWED_HOSTS = ["sparrow-tournament.herokuapp.com"]
 else:
     ALLOWED_HOSTS = []
 
