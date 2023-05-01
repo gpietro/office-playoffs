@@ -18,11 +18,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG'] == 'True'
 
-IS_HEROKU = "DYNO" in os.environ
+IS_HEROKU = os.environ['DYNO'] == 'True'
 
-# Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
 if IS_HEROKU:
-    ALLOWED_HOSTS = ["https://sparrow-tournament.herokuapp.com/"]
+    ALLOWED_HOSTS = ["sparrow-tournament.herokuapp.com/"]
 else:
     ALLOWED_HOSTS = []
 
@@ -49,14 +48,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware'
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [
