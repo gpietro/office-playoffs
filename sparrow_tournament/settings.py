@@ -18,13 +18,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG'] == 'True'
 
-IS_HEROKU = os.environ['DYNO'] == 'True'
-
-if IS_HEROKU:
-    ALLOWED_HOSTS = ["sparrow-tournament.herokuapp.com"]
-else:
+if DEBUG:
     ALLOWED_HOSTS = []
-
+else:
+    ALLOWED_HOSTS = ["sparrow-tournament.herokuapp.com"]
 
 # Application definition
 
@@ -164,8 +161,7 @@ STATICFILES_FINDERS = (
 
 # Define the directories where the static files can be found
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    BASE_DIR / "theme" / "static",
+    BASE_DIR / "static"
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
