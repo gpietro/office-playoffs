@@ -74,16 +74,16 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         },
-        'OAUTH_PKCE_ENABLED': True,
+        'OAUTH_PKCE_ENABLED': True
     }
 }
 
-ROOT_URLCONF = 'sparrow-tournament.urls'
+ROOT_URLCONF = 'sparrow_tournament.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['sparrow-tournament/templates'],
+        'DIRS': ['sparrow_tournament/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,7 +96,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'sparrow-tournament.wsgi.application'
+WSGI_APPLICATION = 'sparrow_tournament.wsgi.application'
 
 
 # Database

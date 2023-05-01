@@ -1,0 +1,21 @@
+{% extends "webapp/layout.html" %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow overflow-hidden">
+  <div class="p-4 sm:p-4 lg:p-8 border-b border-gray-200">
+      <h2 class="text-lg font-medium leading-6 text-gray-900">Google Login</h2>              
+  </div>
+  <div class="p-4 sm:p-4 lg:p-8">    
+      <p>
+        You are about to sign in using a third party account from google.
+      </p>      
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="my-4 inline-flex items-center px-2.5 py-0.5 rounded-md font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">Continue</button>
+      </form>    
+  </div>
+</div>
+
+
+
+{% endblock %}

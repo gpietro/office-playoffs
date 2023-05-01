@@ -1,0 +1,37 @@
+{% extends "webapp/layout.html" %}
+
+{% block content %}  
+  
+<div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200">
+        <h2 class="text-lg font-medium leading-6 text-gray-900">{{ object }}</h2>        
+        <p class="mt-1 text-sm text-gray-500">Edit match</p>
+    </div>
+    <div class="p-4 sm:p-4 lg:p-8">
+        <form method="post">
+            {% csrf_token %}
+            <div class="flex flex-wrap justify-between mt-4"> 
+            <div class="w-full md:w-5/12 mb-4 md:mb-0">
+                <label for="home_score">Home Score</label>
+                {{ form.home_score }}            
+            </div>
+            <div class="w-full md:w-5/12">
+                <label for="away_score">Away Score</label>                
+                {{ form.away_score }}
+            </div>
+            </div>
+            <div class="mt-4 md:w-5/12">
+            <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                    {{ form.date }}                
+                </div>
+            </div>
+            <div class="flex flex-row-reverse">
+            <button type="submit" class="items-center px-2.5 py-0.5 rounded-md font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 mt-4">
+                Save
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

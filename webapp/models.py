@@ -38,6 +38,10 @@ class Participant(models.Model):
     class Meta:
         abstract = True
 
+    # TODO: create custom filter: matches = Match.objects.filter(Q(home_team=team) | Q(away_team=team), tournament=tournament)
+    def played_matches(self, tournament):
+        return self.home_matches.filter(date__isnull=False, tournament=tournament).count() + self.away_matches.filter(date__isnull=False, tournament=tournament).count()
+
     def __str__(self):
         return self.name
 
@@ -49,7 +53,7 @@ class Player(Participant):
         User, on_delete=models.CASCADE, unique=True, related_name='player')
 
     def __str__(self):
-        return self.name + " (" + self.user.username + ")"
+        return self.name
 
 
 class Team(Participant):
@@ -67,12 +71,21 @@ class Team(Participant):
 
 
 class Match(models.Model):
-    home_score = models.PositiveSmallIntegerField(default=0)
-    away_score = models.PositiveSmallIntegerField(default=0)
+    home_score = models.PositiveSmallIntegerField(
+        default=0, null=True, blank=True)
+    away_score = models.PositiveSmallIntegerField(
+        default=0, null=True, blank=True)
     date = models.DateField(null=True, blank=True)
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        if self.home_score is None:
+            self.home_score = 0
+        if self.away_score is None:
+            self.away_score = 0
+        super().save(*args, **kwargs)
 
 
 class SingleMatch(Match):

@@ -1,4 +1,6 @@
 {% extends 'webapp/layout.html' %}
+{% load static %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
@@ -12,6 +14,7 @@
           <tr>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Games</th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
           </tr>
         </thead>
@@ -19,8 +22,15 @@
           {% for player_points in sorted_players %}
               {% with player=player_points.0 points=player_points.1 %}
               <tr>
-                <td class="px-4 py-3">{{ forloop.counter }}</td>
+                {% if forloop.counter == 1 %}
+                <td>
+                  <img src="{% static 'webapp/images/cup_icon.svg' %}" alt="League table icon" width=60 />
+                </td>
+                {% else %}
+                <td class="px-6 py-3">{{ forloop.counter }}</td>
+                {% endif %}
                 <td class="px-4 py-3">{{ player.name }}</td>
+                <td class="px-4 py-3">{{ player|get_played_matches:tournament }}</td>
                 <td class="px-4 py-3">{{ points }}</td>
               </tr>
               {% endwith %}
@@ -39,7 +49,7 @@
     <div class="p-4 sm:p-4 lg:p-6 border-b border-gray-200 flex justify-between">
         <h2 class="text-lg font-medium leading-6 text-gray-900">Matches</h2>
 
-        <a href="{% url 'create_single_match' tournament_id=tournament.id %}" class="inline-flex items-center px-2.5 py-0.5 rounded-md font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">  
+        <a href="{% url 'single_tournament_create_match' tournament_id=tournament.id %}" class="inline-flex items-center px-2.5 py-0.5 rounded-md font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">  
           Create match
         </a>
     </div>
@@ -52,13 +62,15 @@
           <tr>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           {% for match in matches.all %}
             <tr>
               <td class="px-4 py-3">{{ match }}</td>
-              <td class="px-4 py-3">{{ match.date }}</td>              
+              <td class="px-4 py-3">{{ match.date }}</td>   
+              <td class="px-4 py-3"><a href="{% url 'single_tournament_edit_match' tournament_id=tournament.id pk=match.id %}" class="inline-flex items-center px-2.5 py-0.5 rounded-md font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200">edit</a></td>           
             </tr>
           {% endfor %}
         </tbody>

@@ -22,3 +22,8 @@ def is_registered(tournament, player):
 @register.filter
 def get_team_players(team):
     return ', '.join(player.name for player in team.players.all())
+
+
+@register.filter
+def get_played_matches(player, tournament):
+    return player.played_matches(tournament)
