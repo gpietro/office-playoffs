@@ -165,7 +165,8 @@ STATICFILES_FINDERS = (
 
 # Define the directories where the static files can be found
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    BASE_DIR / "static",
+    BASE_DIR / "theme" / "static",
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
