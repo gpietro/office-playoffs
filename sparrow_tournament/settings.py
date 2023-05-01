@@ -22,7 +22,7 @@ IS_HEROKU = "DYNO" in os.environ
 
 # Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
 if IS_HEROKU:
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = ["https://sparrow-tournament.herokuapp.com/"]
 else:
     ALLOWED_HOSTS = []
 
