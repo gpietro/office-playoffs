@@ -64,7 +64,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = os.environ['SITE_ID']
+SITE_ID = int(os.environ['SITE_ID'])
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
