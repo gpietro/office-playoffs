@@ -8,6 +8,10 @@ Feel free to use this project and let us know what you think. If you have any su
 
 <br/>
 
+![project screenshot](/docs/project_screenshot.png)
+
+<br/>
+
 ## Project Structure
 
 The project is built with Django and follows a standard Django app structure. The main project directory is `sparrow_tournament/`, and the web application is in the `webapp/` directory. The templates for rendering the web pages are in the `templates/` directory, and static files are stored in the `static/` directory.
